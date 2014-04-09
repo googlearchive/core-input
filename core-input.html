@@ -76,11 +76,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link href="core-input.css" rel="stylesheet">
 
     <template if="{{multiline}}">
-      <textarea id="input" value="{{value}}" xrows="1" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}"></textarea>
+      <textarea id="input" value="{{value}}" xrows="1" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
     </template>
 
     <template if="{{!multiline}}">
-      <input id="input" value="{{value}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}">
+      <input id="input" value="{{value}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
     </template>
 
   </template>
@@ -203,9 +203,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         }
       },
 
-      inputChangeAction: function(e) {
+      inputChangeAction: function() {
         this.committedValue = this.value;
+        // re-fire non-bubbling event
         this.fire('change', null, this, false);
+      },
+
+      focusAction: function() {
+        // re-fire non-bubbling event
+        this.fire('focus', null, this, false);
+      },
+
+      blurAction: function() {
+        // re-fire non-bubbling event
+        this.fire('blur', null, this, false);
       }
 
     });
