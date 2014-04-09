@@ -76,11 +76,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <link href="core-input.css" rel="stylesheet">
 
     <template if="{{multiline}}">
-      <textarea id="input" value="{{value}}" rows="1" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}"></textarea>
+      <textarea id="input" value="{{value}}" xrows="1" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}"></textarea>
     </template>
 
     <template if="{{!multiline}}">
-      <input id="input" value="{{value}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}">
+      <input id="input" value="{{value}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}">
     </template>
 
   </template>

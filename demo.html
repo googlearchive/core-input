@@ -40,8 +40,14 @@
   <h1>&lt;core-input&gt;</h1>
 
   <section>
-    <aside>This is an example of a single-line text input.</aside>
-    <core-input placeholder="Type something..."></core-input>
+    <aside>This is an example of a single-line text input. See console for committed values.</aside>
+    <core-input id="single" placeholder="Type something..."></core-input>
+    <script>
+      var single = document.getElementById('single');
+      single.addEventListener('change', function() {
+        console.log('single: value committed: ', single.committedValue);
+      });
+    </script>
   </section>
 
   <section>
@@ -52,6 +58,11 @@
         console.log('singleValidation: input invalid! value:', e.detail.value);
       });
     </script>
+  </section>
+
+  <section>
+    <aside>This is an example of a multi-line text input.</aside>
+    <core-input multiline style="height: 4.5em;" placeholder="Type many lines here..."></core-input>
   </section>
 
 </body>
