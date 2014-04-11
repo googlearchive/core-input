@@ -69,14 +69,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <link href="../polymer/polymer.html" rel="import">
 
-<polymer-element name="core-input" attributes="value committedValue placeholder disabled multiline validate invalid">
+<polymer-element name="core-input" attributes="value committedValue placeholder disabled multiline rows maxRows validate invalid">
 
   <template>
 
     <link href="core-input.css" rel="stylesheet">
 
     <template if="{{multiline}}">
-      <textarea id="input" value="{{value}}" xrows="1" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
+      <textarea id="input" value="{{value}}" rows="{{rows}}" fit?="{{rows === 'fit'}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
     </template>
 
     <template if="{{!multiline}}">
@@ -117,6 +117,19 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @default false
        */
       multiline: false,
+
+      /**
+       * (multiline only) The height of this text input in rows. The input
+       * will scroll internally if more input is entered beyond the size
+       * of the component. This property is meaningless if multiline is
+       * false. You can also set this property to "fit" and size the
+       * component with CSS to make the input fit the CSS size.
+       *
+       * @attribute rows
+       * @type number|'fit'
+       * @default 'fit'
+       */
+      rows: 'fit',
 
       /**
        * The value of this input.

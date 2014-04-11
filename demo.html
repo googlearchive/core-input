@@ -17,20 +17,36 @@
       font-family: Roboto2, 'Helvetica Neue', Helvetica, Arial;
       font-size: 16px;
     }
+
     section {
       width: 90%;
       display: flex;
       display: -webkit-flex;
-      align-items: center;
-      -webkit-align-items: center;
+      align-items: flex-start;
+      -webkit-align-items: flex-start;
+      margin: 4em 2em;
     }
+
     aside {
       background: #ccc;
       padding: 1em;
-      margin: 2em;
+      margin-right: 2em;
       font-size: 12px;
       width: 250px;
       border-radius: 3px;
+    }
+
+    core-input {
+      margin: 1em;
+    }
+
+    core-input[multiline] {
+      border: 1px dotted #ccc;
+    }
+
+    core-input.sized {
+      width: 500px;
+      height: 200px;
     }
   </style>
 
@@ -61,8 +77,13 @@
   </section>
 
   <section>
-    <aside>This is an example of a multi-line text input.</aside>
-    <core-input multiline style="height: 4.5em;" placeholder="Type many lines here..."></core-input>
+    <aside>This is an example of a multi-line text input with 3 rows. The input is normally unstyled but here is styled with a dotted border to show its size.</aside>
+    <core-input multiline rows="3" placeholder="Type many lines here..."></core-input>
+  </section>
+
+  <section>
+    <aside>This is an example of a multi-line text input sized with CSS. The input is normally unstyled but here is styled with a dotted border to show its size.</aside>
+    <core-input class="sized" multiline rows="fit" placeholder="This input is 500px * 200px"></core-input>
   </section>
 
 </body>
