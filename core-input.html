@@ -21,7 +21,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
  * The text input's value is considered "committed" if the user hits the <enter>
  * key or blurs the input after changing the value. The "change" event is fired
  * when the value becomes committed, and the committed value is stored in the
- * "committedValue" property.
+ * "value" property. The current value of the input is stored in the "inputValue"
+ * property.
  *
  * core-input also can optionally validate the value by providing it with a
  * regular expression to match against, or a validation function. The
@@ -45,7 +46,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
  */
 
 /**
- * Fired when the value of the input is changed. This is the same event as the DOM
+ * Fired when the inputValue of is changed. This is the same event as the DOM
  * "input" event.
  *
  * @event input
@@ -53,34 +54,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 /**
  * Fired when the user commits the value of the input, either by the hitting the
- * <enter> key or blurring the input after the changing the value. Also see the
+ * <enter> key or blurring the input after the changing the inputValue. Also see the
  * DOM "change" event.
  *
  * @event change
  */
 
 /**
- * Fired when the value of this text input changes and fails validation.
+ * Fired when the inputValue of this text input changes and fails validation.
  *
  * @event input-invalid
  * @param {Object} detail
- *   @param {string} value The text input's value.
+ *   @param {string} value The text input's inputValue.
  */
 -->
 <link href="../polymer/polymer.html" rel="import">
 
-<polymer-element name="core-input" attributes="value committedValue placeholder disabled multiline rows validate invalid">
+<polymer-element name="core-input" attributes="value inputValue placeholder disabled multiline rows validate invalid">
 
   <template>
 
     <link href="core-input.css" rel="stylesheet">
 
     <template if="{{multiline}}">
-      <textarea id="input" value="{{value}}" rows="{{rows}}" fit?="{{rows === 'fit'}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
+      <textarea id="input" value="{{inputValue}}" rows="{{rows}}" fit?="{{rows === 'fit'}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
     </template>
 
     <template if="{{!multiline}}">
-      <input id="input" value="{{value}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
+      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
     </template>
 
   </template>
@@ -132,7 +133,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       rows: 'fit',
 
       /**
-       * The value of this input.
+       * The current value of this input.
+       *
+       * @attribute inputValue
+       * @type string
+       * @default ''
+       */
+      inputValue: '',
+
+      /**
+       * The value of the input committed by the user, either by changing the
+       * inputValue and blurring the input, or by hitting the <enter> key.
        *
        * @attribute value
        * @type string
@@ -141,19 +152,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       value: '',
 
       /**
-       * The value of the input committed by the user, either by changing the
-       * value and blurring the input, or by hitting the <enter> key.
-       *
-       * @attribute committedValue
-       * @type string
-       * @default ''
-       */
-      committedValue: '',
-
-      /**
-       * If this property is not null, the text input's value will be validated.
-       * You can validate the value with either a regular expression or a
-       * custom function.
+			 * If this property is not null, the text input's inputValue will be
+			 * validated. You can validate the value with either a regular expression
+			 * or a custom function.
        *
        * To use a regular expression, set this property to a RegExp object or
        * a string containing the regular expression to match against. To use a
@@ -178,7 +179,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       validate: null,
 
       /**
-       * If this property is true, the text input's value failed validation.
+       * If this property is true, the text input's inputValue failed validation.
        *
        * @attribute invalid
        * @type boolean
@@ -188,36 +189,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       validateValue: function() {
         var valid = true;
-        if (!this.value) {
+        if (!this.inputValue) {
           valid = true;
         } else if (typeof this.validate === 'string') {
-          valid = new RegExp(this.validate).exec(this.value);
+          valid = new RegExp(this.validate).exec(this.inputValue);
         } else if (this.validate.exec) {
-          valid = this.validate.exec(this.value);
+          valid = this.validate.exec(this.inputValue);
         } else if (this.validate instanceof Function) {
-          valid = this.validate.call(this.value);
+          valid = this.validate.call(this.inputValue);
         }
 
         this.invalid = !valid;
         this.classList.toggle('invalid', !valid);
 
         if (!valid) {
-          this.fire('input-invalid', {value: this.value});
+          this.fire('input-invalid', {value: this.inputValue});
         }
       },
 
-      valueChanged: function() {
+      inputValueChanged: function() {
         if (this.validate) {
           this.validateValue();
         }
 
-        if (!this.value) {
-          this.committedValue = '';
+        if (!this.inputValue) {
+          this.value = '';
         }
       },
 
       inputChangeAction: function() {
-        this.committedValue = this.value;
+        this.value = this.inputValue;
         // re-fire non-bubbling event
         this.fire('change', null, this, false);
       },
