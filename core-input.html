@@ -14,9 +14,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
  *
  * Example:
  *
- *    <core-input placeholder="Placeholder text here"></core-input>
+ *     <core-input placeholder="Placeholder text here"></core-input>
  *
- *    <core-input multiline placeholder="Enter multiple lines here"></core-input>
+ *     <core-input multiline placeholder="Enter multiple lines here"></core-input>
  *
  * The text input's value is considered "committed" if the user hits the <enter>
  * key or blurs the input after changing the value. The "change" event is fired
@@ -31,14 +31,14 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
  *
  * Example:
  *
- *    // valid only if the value is a number
- *    <core-input validate="^[0-9]*$" on-input-invalid="{{inputInvalidAction}}"></core-input>
+ *     // valid only if the value is a number
+ *     <core-input validate="^[0-9]*$" on-input-invalid="{{inputInvalidAction}}"></core-input>
  *
- *    this.$.input.validate = /^[0-9]*$/;  // valid only if the value is a number
+ *     this.$.input.validate = /^[0-9]*$/;  // valid only if the value is a number
  *
- *    this.$.input2.validate = function(value) {
- *      return value === 'foo';  // valid only if the value is 'foo'
- *    }
+ *     this.$.input2.validate = function(value) {
+ *       return value === 'foo';  // valid only if the value is 'foo'
+ *     }
  *
  * @group Polymer Core Elements
  * @element core-input
@@ -65,7 +65,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
  *
  * @event input-invalid
  * @param {Object} detail
- *   @param {string} value The text input's inputValue.
+ * @param {string} value The text input's inputValue.
  */
 -->
 <link href="../polymer/polymer.html" rel="import">
@@ -111,7 +111,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       disabled: false,
 
       /**
-       * If true, this input accepts multi-line input like a <textarea>
+       * If true, this input accepts multi-line input like a `<textarea>`
        *
        * @attribute multiline
        * @type boolean
@@ -164,13 +164,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        *
        * Example:
        *
-       * <core-input validate="^[0-9]*$"></core-input> // valid only if the value is a number
+       *     // valid only if the value is a number
+       *     <core-input validate="^[0-9]*$"></core-input> 
        * 
-       * this.$.input.validate = /^[0-9]*$/;  // valid only if the value is a number
+       *     // valid only if the value is a number
+       *     this.$.input.validate = /^[0-9]*$/;
        *
-       * this.$.input2.validate = function(value) {
-       *     return value === 'foo';  // valid only if the value is 'foo'
-       * }
+       *     this.$.input2.validate = function(value) {
+       *         // valid only if the value is 'foo'
+       *         return value === 'foo';  
+       *     }
        *
        * @attribute validate
        * @type string|RegExp|Function(value)
@@ -239,6 +242,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     });
 
+    CoreInput = function() {
+      return document.createElement('core-input');
+    };
+    CoreInput.validate = {
+      number: /^[0-9]*$/
+    };
   </script>
 
 </polymer-element>

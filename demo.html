@@ -6,6 +6,7 @@
   <title>core-input</title>
 
   <script src="../platform/platform.js"></script>
+
   <link href="core-input.html" rel="import">
 
   <style>
@@ -13,7 +14,7 @@
       padding: 2em;
       margin: 0;
       -webkit-transform: translateZ(0);
-      font-family: 'Helvetica Neue', Helvetica, Arial;
+      font-family: sans-serif;
       font-size: 16px;
     }
 
@@ -63,11 +64,6 @@
         console.log('single: value committed: ', single.value);
       });
     </script>
-  </section>
-
-  <section>
-    <aside>This is an example of setting a default value.</aside>
-    <core-input id="single" value="A pre-filled value."></core-input>
   </section>
 
   <section>
