@@ -226,8 +226,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       inputChangeAction: function() {
         this.value = this.inputValue;
-        // re-fire non-bubbling event
-        this.fire('change', null, this, false);
+        if (!window.ShadowDOMPolyfill) {
+          // re-fire non-bubbling event
+          this.fire('change', null, this, false);
+        }
       },
 
       focusAction: function() {
