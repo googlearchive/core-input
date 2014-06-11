@@ -199,7 +199,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         } else if (this.validate.exec) {
           valid = this.validate.exec(this.inputValue);
         } else if (this.validate instanceof Function) {
-          valid = this.validate.call(this.inputValue);
+          valid = this.validate.call(this, this.inputValue);
         }
 
         this.invalid = !valid;
