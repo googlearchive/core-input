@@ -70,7 +70,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 <link href="../polymer/polymer.html" rel="import">
 
-<polymer-element name="core-input" attributes="value inputValue placeholder disabled multiline rows validate invalid">
+<polymer-element name="core-input" attributes="value inputValue placeholder disabled multiline rows validate invalid type">
 
   <template>
 
@@ -81,7 +81,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </template>
 
     <template if="{{!multiline}}">
-      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
+      <input id="input" type={{type}} value="{{inputValue}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-labelledby="placeholder" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
     </template>
 
   </template>
@@ -189,6 +189,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
        * @default false
        */
       invalid: false,
+
+      /**
+      * This property will take affect only if the multiline attribute is set to false.
+      * Will make the core-input element behave as ordinary input element with the addition
+      * of the type attribute.
+      * All possible types for input can be found here: http://www.w3schools.com/tags/att_input_type.asp
+      * 
+      * @attribute type
+      * @type string
+      * @default text
+      */
+      type: 'text',
 
       validateValue: function() {
         var valid = true;
