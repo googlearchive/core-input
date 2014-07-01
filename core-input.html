@@ -65,6 +65,7 @@ DOM "change" event.
 Fired when the inputValue of this text input changes and fails validation.
 
 @event input-invalid
+@event input-valid
 @param {Object} detail
 @param {string} value The text input's inputValue.
 -->
@@ -218,6 +219,8 @@ Fired when the inputValue of this text input changes and fails validation.
         this.classList.toggle('invalid', this.invalid);
         if (this.invalid) {
           this.fire('input-invalid', {value: this.inputValue});
+        } else {
+          this.fire('input-valid', {value: this.inputValue});
         }
       },
 
