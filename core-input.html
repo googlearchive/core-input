@@ -168,7 +168,9 @@ Fired when the inputValue of this text input changes and passes validation.
         rows: 'fit',
   
         /**
-         * The current value of this input.
+         * The current value of this input. Changing inputValue programmatically
+         * will cause value to be out of sync. Instead, change value directly
+         * or call commit() after changing inputValue.
          *
          * @attribute inputValue
          * @type string
@@ -261,10 +263,6 @@ Fired when the inputValue of this text input changes and passes validation.
         if (this.validate || this.required) {
           this.validateValue();
         }
-
-        if (!this.inputValue) {
-          this.value = '';
-        }
       },
 
       valueChanged: function() {
@@ -275,8 +273,17 @@ Fired when the inputValue of this text input changes and passes validation.
         this.validateValue();
       },
 
+      /**
+       * Commits the inputValue to value.
+       *
+       * @method commit
+       */
+      commit: function() {
+         this.value = this.inputValue;
+      },
+
       inputChangeAction: function() {
-        this.value = this.inputValue;
+        this.commit();
         if (!window.ShadowDOMPolyfill) {
           // re-fire non-bubbling event
           this.fire('change', null, this, false);
