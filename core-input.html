@@ -68,6 +68,14 @@ Fired when the inputValue of this text input changes and fails validation.
 @param {Object} detail
 @param {string} value The text input's inputValue.
 -->
+
+<!--
+Fired when the inputValue of this text input changes and passes validation.
+
+@event input-valid
+@param {Object} detail
+@param {string} value The text input's inputValue.
+-->
 <link href="../polymer/polymer.html" rel="import">
 
 <polymer-element name="core-input">
@@ -218,6 +226,8 @@ Fired when the inputValue of this text input changes and fails validation.
         this.classList.toggle('invalid', this.invalid);
         if (this.invalid) {
           this.fire('input-invalid', {value: this.inputValue});
+        } else {
+          this.fire('input-valid', {value: this.inputValue});
         }
       },
 
