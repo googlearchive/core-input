@@ -261,6 +261,14 @@ Fired when the inputValue of this text input changes and passes validation.
       blurAction: function() {
         // re-fire non-bubbling event
         this.fire('blur', null, this, false);
+      },
+
+      focus: function() {
+        this.$.input.focus();
+      },
+
+      blur: function() {
+        this.$.input.blur();
       }
 
     });
