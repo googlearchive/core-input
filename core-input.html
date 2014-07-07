@@ -217,7 +217,7 @@ Fired when the inputValue of this text input changes and passes validation.
         } else if (this.validate.exec) {
           valid = this.validate.exec(this.inputValue);
         } else if (this.validate instanceof Function) {
-          valid = this.validate.call(this.inputValue);
+          valid = this.validate.call(this, this.inputValue);
         }
         this.invalid = !valid;
       },
