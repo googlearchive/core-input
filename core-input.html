@@ -85,11 +85,11 @@ Fired when the inputValue of this text input changes and passes validation.
     <link href="core-input.css" rel="stylesheet">
 
     <template if="{{multiline}}">
-      <textarea id="input" value="{{inputValue}}" rows="{{rows}}" fit?="{{rows === 'fit'}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
+      <textarea id="input" value="{{inputValue}}" rows="{{rows}}" fit?="{{rows === 'fit'}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" required?="{{required}}" readonly?="{{readonly}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
     </template>
 
     <template if="{{!multiline}}">
-      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" type="{{type}}" placeholder="{{placeholder}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
+      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" type="{{type}}" placeholder="{{placeholder}}" required?="{{required}}" readonly?="{{readonly}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
     </template>
 
   </template>
@@ -126,8 +126,26 @@ Fired when the inputValue of this text input changes and passes validation.
          * @default text
          */
         type: 'text',
+
+        /**
+         * If true, the user cannot modify the value of the input.
+         *
+         * @attribute readonly
+         * @type boolean
+         * @default false
+         */
+        readonly: false,
+
+        /**
+         * If true, the input is invalid until the value becomes non-null.
+         *
+         * @attribute required
+         * @type boolean
+         * @default false
+         */
+        required: false,
         
-       /**
+        /**
          * If true, this input accepts multi-line input like a `<textarea>`
          *
          * @attribute multiline
@@ -210,15 +228,23 @@ Fired when the inputValue of this text input changes and passes validation.
       
       validateValue: function() {
         var valid = true;
-        if (!this.inputValue) {
-          valid = true;
-        } else if (typeof this.validate === 'string') {
-          valid = new RegExp(this.validate).exec(this.inputValue);
-        } else if (this.validate.exec) {
-          valid = this.validate.exec(this.inputValue);
-        } else if (this.validate instanceof Function) {
-          valid = this.validate.call(this, this.inputValue);
+
+        if (this.validate) {
+
+          if (!this.inputValue) {
+            valid = !this.required;
+          } else if (typeof this.validate === 'string') {
+            valid = new RegExp(this.validate).exec(this.inputValue);
+          } else if (this.validate.exec) {
+            valid = this.validate.exec(this.inputValue);
+          } else if (this.validate instanceof Function) {
+            valid = this.validate.call(this, this.inputValue);
+          }
+
+        } else if (this.required) {
+          valid = !!this.inputValue;
         }
+
         this.invalid = !valid;
       },
 
@@ -232,7 +258,7 @@ Fired when the inputValue of this text input changes and passes validation.
       },
 
       inputValueChanged: function() {
-        if (this.validate) {
+        if (this.validate || this.required) {
           this.validateValue();
         }
 
@@ -243,6 +269,10 @@ Fired when the inputValue of this text input changes and passes validation.
 
       valueChanged: function() {
         this.inputValue = this.value;
+      },
+
+      requiredChanged: function() {
+        this.validateValue();
       },
 
       inputChangeAction: function() {
