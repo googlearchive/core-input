@@ -61,11 +61,11 @@
 
   <section horizontal start layout>
     <aside>This is an example of a single-line password input. See console for committed values.</aside>
-    <core-input id="single" type="password" placeholder="Enter password..."></core-input>
+    <core-input id="password" type="password" placeholder="Enter password..."></core-input>
     <script>
-      var single = document.getElementById('single');
-      single.addEventListener('change', function() {
-        console.log('single: value committed: ', single.value);
+      var password = document.getElementById('password');
+      password.addEventListener('change', function() {
+        console.log('password: value committed: ', password.value);
       });
     </script>
   </section>
