@@ -252,11 +252,7 @@ Fired when the inputValue of this text input changes and passes validation.
 
       invalidChanged: function() {
         this.classList.toggle('invalid', this.invalid);
-        if (this.invalid) {
-          this.fire('input-invalid', {value: this.inputValue});
-        } else {
-          this.fire('input-valid', {value: this.inputValue});
-        }
+        this.fire('input-'+ this.invalid ? 'invalid' : 'valid', {value: this.inputValue});
       },
 
       inputValueChanged: function() {

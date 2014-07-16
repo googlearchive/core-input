@@ -35,6 +35,14 @@
       margin: 1em;
     }
 
+    #singleValidation.invalid {
+      border: solid 1px red;
+    }
+
+    #singleValidation {
+      border: solid 1px lime;
+    }
+
     core-input[multiline] {
       border: 1px dotted #ccc;
     }
@@ -69,13 +77,16 @@
       });
     </script>
   </section>
-  
+
   <section horizontal start layout>
-    <aside>This is an example of a single-line text input with number validation. See console for validation errors.</aside>
+    <aside>This is an example of a single-line text input with number validation. The border color reflects the current validation state. See console for validation errors or validity.</aside>
     <core-input id="singleValidation" placeholder="Only enter numbers..." validate="^[0-9]*$"></core-input>
     <script>
       document.getElementById('singleValidation').addEventListener('input-invalid', function(e, value, s) {
         console.log('singleValidation: input invalid! value:', e.detail.value);
+      });
+      document.getElementById('singleValidation').addEventListener('input-valid', function(e, value, s) {
+        console.log('singleValidation: input valid! value:', e.detail.value);
       });
     </script>
   </section>
