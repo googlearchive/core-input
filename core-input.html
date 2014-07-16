@@ -78,18 +78,18 @@ Fired when the inputValue of this text input changes and passes validation.
 -->
 <link href="../polymer/polymer.html" rel="import">
 
-<polymer-element name="core-input">
+<polymer-element name="core-input" on-focus="{{focusAction}}">
 
   <template>
 
     <link href="core-input.css" rel="stylesheet">
 
     <template if="{{multiline}}">
-      <textarea id="input" value="{{inputValue}}" rows="{{rows}}" fit?="{{rows === 'fit'}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" required?="{{required}}" readonly?="{{readonly}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}"></textarea>
+      <textarea id="input" value="{{inputValue}}" rows="{{rows}}" fit?="{{rows === 'fit'}}" disabled?="{{disabled}}" placeholder="{{placeholder}}" required?="{{required}}" readonly?="{{readonly}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{inputFocusAction}}" on-blur="{{inputBlurAction}}"></textarea>
     </template>
 
     <template if="{{!multiline}}">
-      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" type="{{type}}" placeholder="{{placeholder}}" required?="{{required}}" readonly?="{{readonly}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{focusAction}}" on-blur="{{blurAction}}">
+      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" type="{{type}}" placeholder="{{placeholder}}" required?="{{required}}" readonly?="{{readonly}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-change="{{inputChangeAction}}" on-focus="{{inputFocusAction}}" on-blur="{{inputBlurAction}}">
     </template>
 
   </template>
@@ -227,7 +227,11 @@ Fired when the inputValue of this text input changes and passes validation.
          */
         invalid: false,
       },
-      
+
+      ready: function() {
+        this.tabindexChanged(this.getAttribute('tabindex'));
+      },
+
       validateValue: function() {
         var valid = true;
 
@@ -269,6 +273,20 @@ Fired when the inputValue of this text input changes and passes validation.
         this.validateValue();
       },
 
+      attributeChanged: function(attr, oldVal, curVal) {
+        if (attr === 'tabindex') {
+          this.tabindexChanged(curVal);
+        }
+      },
+
+      tabindexChanged: function(tabindex) {
+        if (tabindex > 0) {
+          this.$.input.setAttribute('tabindex', -1);
+        } else {
+          this.$.input.removeAttribute('tabindex');
+        }
+      },
+
       /**
        * Commits the inputValue to value.
        *
@@ -287,11 +305,15 @@ Fired when the inputValue of this text input changes and passes validation.
       },
 
       focusAction: function() {
+        this.$.input.focus();
+      },
+
+      inputFocusAction: function() {
         // re-fire non-bubbling event
         this.fire('focus', null, this, false);
       },
 
-      blurAction: function() {
+      inputBlurAction: function() {
         // re-fire non-bubbling event
         this.fire('blur', null, this, false);
       }
