@@ -316,6 +316,52 @@ Fired when the inputValue of this text input changes and passes validation.
       inputBlurAction: function() {
         // re-fire non-bubbling event
         this.fire('blur', null, this, false);
+      },
+
+      blur: function() {
+        // forward blur method to the internal input / textarea element
+        this.$.input.blur();
+      },
+
+      click: function() {
+        // forward click method to the internal input / textarea element
+        this.$.input.click();
+      },
+
+      focus: function() {
+        // forward focus method to the internal input / textarea element
+        this.$.input.focus();
+      },
+
+      select: function() {
+        // forward select method to the internal input / textarea element
+        this.$.input.focus();
+      },
+
+      setSelectionRange: function( selectionStart, selectionEnd, selectionDirection ) {
+        // forward setSelectionRange method to the internal input / textarea element
+        this.$.input.setSelectionRange( selectionStart, selectionEnd, selectionDirection );
+      },
+
+      setRangeText: function( replacement, start, end, selectMode ) {
+        // forward setRangeText method to the internal input element
+        if ( !this.multiline ) {
+          this.$.input.setRangeText( replacement, start, end, selectMode );
+        }
+      },
+
+      stepDown: function( n ) {
+        // forward stepDown method to the internal input element
+        if ( !this.multiline ) {
+          this.$.input.stepDown( n );
+        }
+      },
+
+      stepUp: function( n ) {
+        // forward stepUp method to the internal input element
+        if ( !this.multiline ) {
+          this.$.input.stepUp( n );
+        }
       }
 
     });
