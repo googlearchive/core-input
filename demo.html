@@ -69,13 +69,43 @@
 
   <section horizontal start layout>
     <aside>This is an example of a single-line password input. See console for committed values.</aside>
-    <core-input id="password" type="password" placeholder="Enter password..."></core-input>
+    <core-input id="single" type="password" placeholder="Enter password..."></core-input>
     <script>
-      var password = document.getElementById('password');
-      password.addEventListener('change', function() {
-        console.log('password: value committed: ', password.value);
+      var single = document.getElementById('single');
+      single.addEventListener('change', function() {
+        console.log('single: value committed: ', single.value);
       });
     </script>
+  </section>
+
+  <section horizontal start layout>
+    <aside>This is an example of a single-line number input. See console for committed values.</aside>
+    <core-input id="singleNumber" type="number" placeholder="Type only numbers..."></core-input>
+    <script>
+      document.getElementById('singleNumber').addEventListener('input-invalid', function(e, value, s) {
+        console.log('singleNumber: input invalid! value:', e.detail.value);
+      });
+    </script>
+  </section>
+
+  <section horizontal start layout>
+      <aside>This is an example of a single-line email input. See console for committed values.</aside>
+      <core-input id="singleEmail" type="email" placeholder="Enter email..."></core-input>
+      <script>
+        document.getElementById('singleEmail').addEventListener('input-invalid', function(e, value, s) {
+          console.log('singleEmail: input invalid! value:', e.detail.value);
+        });
+      </script>
+  </section>
+
+  <section horizontal start layout>
+      <aside>This is an example of a single-line url input. See console for committed values.</aside>
+      <core-input id="singleUrl" type="url" placeholder="Enter url..."></core-input>
+      <script>
+        document.getElementById('singleUrl').addEventListener('input-invalid', function(e, value, s) {
+          console.log('singleUrl: input invalid! value:', e.detail.value);
+        });
+      </script>
   </section>
 
   <section horizontal start layout>
