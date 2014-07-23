@@ -92,6 +92,19 @@
   </section>
 
   <section horizontal start layout>
+    <aside>This is an example of a single-line text input with number type. The border color reflects the current validation state.</aside>
+    <core-input id="singleValidation" placeholder="Only enter numbers..." type="number"></core-input>
+    <script>
+      document.getElementById('singleValidation').addEventListener('input-invalid', function(e, value, s) {
+        console.log('singleValidation: input invalid! value:', e.detail.value);
+      });
+      document.getElementById('singleValidation').addEventListener('input-valid', function(e, value, s) {
+        console.log('singleValidation: input valid! value:', e.detail.value);
+      });
+    </script>
+  </section>
+
+  <section horizontal start layout>
     <aside>This is an example of a multi-line text input with 3 rows. The input is normally unstyled but here is styled with a dotted border to show its size.</aside>
     <core-input multiline rows="3" placeholder="Type many lines here..."></core-input>
   </section>

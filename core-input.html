@@ -228,17 +228,24 @@ Fired when the inputValue of this text input changes and passes validation.
         invalid: false,
       },
 
+      observe: {
+        '$.input.validity.valid': 'validity'
+      },
+
+      validity: function() {
+        this.invalid = !this.$.input.validity.valid;
+      },
+
       ready: function() {
         this.handleTabindex(this.getAttribute('tabindex'));
       },
 
       validateValue: function() {
-        var valid = true;
-
         if (this.validate) {
 
+          var valid = true;
           if (!this.inputValue) {
-            valid = !this.required;
+            valid = true;
           } else if (typeof this.validate === 'string') {
             valid = new RegExp(this.validate).exec(this.inputValue);
           } else if (this.validate.exec) {
@@ -246,12 +253,11 @@ Fired when the inputValue of this text input changes and passes validation.
           } else if (this.validate instanceof Function) {
             valid = this.validate.call(this, this.inputValue);
           }
+          this.$.input.setCustomValidity(valid ? '' : this.error || 'invalid');
 
-        } else if (this.required) {
-          valid = !!this.inputValue;
+        } else if (this.required && this.error) {
+          this.$.input.setCustomValidity(!!this.inputValue ? '' : this.error);
         }
-
-        this.invalid = !valid;
       },
 
       invalidChanged: function() {
