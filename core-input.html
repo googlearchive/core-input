@@ -229,7 +229,7 @@ Fired when the inputValue of this text input changes and passes validation.
       },
 
       ready: function() {
-        this.tabindexChanged(this.getAttribute('tabindex'));
+        this.handleTabindex(this.getAttribute('tabindex'));
       },
 
       validateValue: function() {
@@ -275,11 +275,11 @@ Fired when the inputValue of this text input changes and passes validation.
 
       attributeChanged: function(attr, oldVal, curVal) {
         if (attr === 'tabindex') {
-          this.tabindexChanged(curVal);
+          this.handleTabindex(curVal);
         }
       },
 
-      tabindexChanged: function(tabindex) {
+      handleTabindex: function(tabindex) {
         if (tabindex > 0) {
           this.$.input.setAttribute('tabindex', -1);
         } else {
@@ -299,23 +299,32 @@ Fired when the inputValue of this text input changes and passes validation.
       inputChangeAction: function() {
         this.commit();
         if (!window.ShadowDOMPolyfill) {
-          // re-fire non-bubbling event
-          this.fire('change', null, this, false);
+          // re-fire event that does not bubble across shadow roots
+          this.fire('change', null, this);
         }
       },
 
-      focusAction: function() {
-        this.$.input.focus();
+      focusAction: function(e) {
+        if (this.getAttribute('tabindex') > 0) {
+          // Forward focus to the inner input if tabindex is set on the element
+          // This will not cause an infinite loop because focus will not fire on the <input>
+          // again if it's already focused.
+          this.$.input.focus();
+        }
       },
 
-      inputFocusAction: function() {
-        // re-fire non-bubbling event
-        this.fire('focus', null, this, false);
+      inputFocusAction: function(e) {
+        if (window.ShadowDOMPolyfill) {
+          // re-fire non-bubbling event if polyfill
+          this.fire('focus', null, this, false);
+        }
       },
 
       inputBlurAction: function() {
-        // re-fire non-bubbling event
-        this.fire('blur', null, this, false);
+        if (window.ShadowDOMPolyfill) {
+          // re-fire non-bubbling event
+          this.fire('blur', null, this, false);
+        }
       },
 
       blur: function() {
