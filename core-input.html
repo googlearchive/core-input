@@ -28,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
  * ----------
  *
  * core-input can optionally validate the value using the HTML5 constraints API,
- * similar to native inputs. There are two methods to enable input validation:
+ * similar to native inputs. There are two methods to configure input validation:
  *
  * 1. By setting the `type` attribute. For example, setting it to `email` will
  *    check the value is a valid email, and setting it to `number` will check
@@ -263,7 +263,16 @@ Fired when the inputValue of this text input changes and passes validation.
          * @type boolean
          * @default false
          */
-        invalid: false
+        invalid: false,
+
+        /**
+         * If this property is true, validate the input as they are entered.
+         *
+         * @attribute validateImmediately
+         * @type boolean
+         * @default true
+         */
+        validateImmediately: true
       },
 
       ready: function() {
