@@ -279,6 +279,14 @@ Fired when the inputValue of this text input changes and passes validation.
         this.handleTabindex(this.getAttribute('tabindex'));
       },
 
+      disabledChanged: function() {
+        if (this.disabled) {
+          this.setAttribute('aria-hidden', true);
+        } else {
+          this.removeAttribute('aria-hidden');
+        }
+      },
+
       invalidChanged: function() {
         this.classList.toggle('invalid', this.invalid);
         this.fire('input-'+ (this.invalid ? 'invalid' : 'valid'), {value: this.inputValue});
