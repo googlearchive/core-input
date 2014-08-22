@@ -99,7 +99,7 @@ Fired when the inputValue of this text input changes and passes validation.
     </template>
 
     <template if="{{!multiline}}">
-      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" type="{{type}}" placeholder="{{placeholder}}" autofocus?="{{autofocus}}" required?="{{required}}" readonly?="{{readonly}}" pattern="{{pattern}}" min="{{min}}" max="{{max}}" step="{{step}}" maxlength="{{maxlength}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-keydown="{{keydownAction}}" on-change="{{inputChangeAction}}" on-focus="{{inputFocusAction}}" on-blur="{{inputBlurAction}}">
+      <input id="input" value="{{inputValue}}" disabled?="{{disabled}}" type="{{type}}" placeholder="{{placeholder}}" autofocus?="{{autofocus}}" required?="{{required}}" readonly?="{{readonly}}" pattern="{{pattern}}" min="{{min}}" max="{{max}}" step="{{step}}" maxlength="{{maxlength}}" aria-label="{{label || placeholder}}" aria-invalid="{{invalid}}" on-keypress="{{keypressAction}}" on-change="{{inputChangeAction}}" on-focus="{{inputFocusAction}}" on-blur="{{inputBlurAction}}">
     </template>
 
   </template>
@@ -293,7 +293,9 @@ Fired when the inputValue of this text input changes and passes validation.
       },
 
       inputValueChanged: function() {
-        this.updateValidity_();
+        if (this.validateImmediately) {
+          this.updateValidity_();
+        }
       },
 
       valueChanged: function() {
@@ -301,7 +303,9 @@ Fired when the inputValue of this text input changes and passes validation.
       },
 
       requiredChanged: function() {
-        this.updateValidity_();
+        if (this.validateImmediately) {
+          this.updateValidity_();
+        }
       },
 
       attributeChanged: function(attr, oldVal, curVal) {
@@ -333,13 +337,14 @@ Fired when the inputValue of this text input changes and passes validation.
         }
       },
 
-      keydownAction: function() {
-        // for type = number, the value is the empty string unless the input is a valid number.
-        // FIXME(yvonne): check other types
-        if (this.type === 'number') {
-          this.async(function() {
-            this.updateValidity_();
-          });
+      keypressAction: function(e) {
+        // disallow non-numeric input if type = number
+        if (this.type !== 'number') {
+          return;
+        }
+        var c = String.fromCharCode(e.charCode);
+        if (!c.match(/[\d-\.e]/)) {
+          e.preventDefault();
         }
       },
 
