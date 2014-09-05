@@ -343,7 +343,7 @@ Fired when the inputValue of this text input changes and passes validation.
           return;
         }
         var c = String.fromCharCode(e.charCode);
-        if (!c.match(/[\d-\.e]/)) {
+        if (e.charCode !== 0 && !c.match(/[\d-\.e]/)) {
           e.preventDefault();
         }
       },
