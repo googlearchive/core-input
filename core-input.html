@@ -308,10 +308,8 @@ Fired when the inputValue of this text input changes and passes validation.
         }
       },
 
-      attributeChanged: function(attr, oldVal, curVal) {
-        if (attr === 'tabindex') {
+      tabindexChanged: function(oldVal, curVal) {
           this.handleTabindex(curVal);
-        }
       },
 
       handleTabindex: function(tabindex) {
