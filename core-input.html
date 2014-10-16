@@ -20,6 +20,9 @@ The input's value is considered "committed" if the user hits the "enter" key
 or blurs the input after changing the value. The committed value is stored in
 the `committedValue` property.
 
+If the input has `type = number`, this element will also prevent non-numeric characters
+from being typed into the text field.
+
 Accessibility
 -------------
 
@@ -71,7 +74,8 @@ The following ARIA attributes are set automatically:
     },
 
     eventDelegates: {
-      change: 'changeAction'
+      change: 'changeAction',
+      keypress: 'keypressAction'
     },
 
     ready: function() {
@@ -113,6 +117,17 @@ The following ARIA attributes are set automatically:
 
     changeAction: function() {
       this.commit();
+    },
+
+    keypressAction: function(e) {
+      // disallow non-numeric input if type = number
+      if (this.type !== 'number') {
+       return;
+      }
+      var c = String.fromCharCode(e.charCode);
+      if (e.charCode !== 0 && e.charCode !== 13 && !c.match(/[\d-\.e]/)) {
+        e.preventDefault();
+      }
     }
 
   });
