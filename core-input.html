@@ -69,13 +69,24 @@ The following ARIA attributes are set automatically:
        * @type string
        * @default ''
        */
-      committedValue: ''
+      committedValue: '',
+
+      /**
+       * Set to true to prevent invalid input from being entered.
+       *
+       * @attribute preventInvalidInput
+       * @type boolean
+       * @default false
+       */
+      preventInvalidInput: false
 
     },
 
+    previousValidInput: '',
+
     eventDelegates: {
-      change: 'changeAction',
-      keypress: 'keypressAction'
+      input: 'inputAction',
+      change: 'changeAction'
     },
 
     ready: function() {
@@ -119,14 +130,13 @@ The following ARIA attributes are set automatically:
       this.commit();
     },
 
-    keypressAction: function(e) {
-      // disallow non-numeric input if type = number
-      if (this.type !== 'number') {
-       return;
-      }
-      var c = String.fromCharCode(e.charCode);
-      if (e.charCode !== 0 && e.charCode !== 13 && !c.match(/[\d-\.e]/)) {
-        e.preventDefault();
+    inputAction: function(e) {
+      if (this.preventInvalidInput) {
+        if (!e.target.validity.valid) {
+          e.target.value = this.previousValidInput;
+        } else {
+          this.previousValidInput = e.target.value;
+        }
       }
     }
 

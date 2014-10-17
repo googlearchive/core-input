@@ -10,7 +10,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>core-input a11y tests</title>
+  <title>core-input basic tests</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
   <script src="../../webcomponentsjs/webcomponents.js"></script>
@@ -21,30 +21,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 </head>
 <body>
 
-  <input id="input1" is="core-input" placeholder="label">
-  <input id="input2" is="core-input" disabled>
+  <input id="input1" is="core-input" pattern="[abc]*" preventInvalidInput>
 
   <script>
 
     var i1 = document.getElementById('input1');
-    var i2 = document.getElementById('input2');
 
-    test('aria-label set to placeholder', function(done) {
-      assert.strictEqual('label', i1.getAttribute('aria-label'));
-      i1.placeholder = 'new label';
-      asyncPlatformFlush(function() {
-        assert.strictEqual('new label', i1.getAttribute('aria-label'));
-        done();
+    function dispatchInputEvent(target) {
+      var e = new Event('input', {
+        bubbles: true
       });
-    });
+      target.dispatchEvent(e);
+    };
 
-    test('aria-disabled is set', function(done) {
-      assert.ok(i2.hasAttribute('aria-disabled'));
-      i2.removeAttribute('disabled');
-      asyncPlatformFlush(function() {
-        assert.ok(!i2.hasAttribute('aria-disabled'));
-        done();
+    suite('preventInvalidInput', function() {
+
+      test('cannot enter invalid input', function() {
+        i1.value = '123';
+        dispatchInputEvent(i1);
+        assert.ok(!i1.value);
       });
+
+      test('preserves valid input after entering invalid input', function() {
+        var value = 'abc';
+        i1.value = value;
+        dispatchInputEvent(i1);
+        assert.strictEqual(value, i1.value);
+        i1.value = value + '123';
+        dispatchInputEvent(i1);
+        assert.strictEqual(value, i1.value);
+      });
+
     });
 
   </script>
