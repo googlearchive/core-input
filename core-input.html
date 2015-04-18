@@ -104,7 +104,7 @@ The following ARIA attributes are set automatically:
       /* set ARIA attributes */
       this.disabledHandler();
       this.placeholderHandler();
-      this.preventInvalidInput = this.getAttribute('preventInvalidInput');
+      this.preventInvalidInput = this.getAttribute('preventInvalidInput') !== null;
     },
 
     attributeChanged: function(attr, old) {
